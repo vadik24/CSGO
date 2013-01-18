@@ -58,14 +58,10 @@ new String:sBuyTomeSound[256];
 
 public OnPluginStart()
 {
-<<<<<<< HEAD
-    HookEvent("round_start", Event_RoundStart);
-=======
     if(GameCSANY())
     {
         HookEvent("round_start", Event_RoundStart);
     }
->>>>>>> Updated 2.0 verison
 
     iOriginOffset = FindSendPropOffs("CBaseEntity", "m_vecOrigin");
     iMyWeaponsOffset = FindSendPropOffs("CBaseCombatCharacter", "m_hMyWeapons");
@@ -76,7 +72,7 @@ public OnPluginStart()
     hMaskLeechCvar = CreateConVar("war3_shop_mask_percent", "0.30", "Percent of damage rewarded for Mask of Death, from 0.0 - 1.0");
     hOrbSlowCvar = CreateConVar("war3_shop_orb_speed","0.6", "Orb of Frost speed, 1.0 is normal speed, 0.6 default for orb.");
     hTomeXPCvar = CreateConVar("war3_shop_tome_xp","100", "Experience awarded for Tome of Experience.");
-    hSockGravityCvar = CreateConVar("war3_shop_sock_gravity", "0.6", "Gravity used for Sock of Feather, 0.4 is default for sock, 1.0 is normal gravity");
+    hSockGravityCvar = CreateConVar("war3_shop_sock_gravity", "0.4", "Gravity used for Sock of Feather, 0.4 is default for sock, 1.0 is normal gravity");
     hMoleDeathmatchAllowedCvar = CreateConVar("war3_shop_mole_dm", "0", "Set this to 1 if server is deathmatch");
     hRegenHPCvar = CreateConVar("war3_shop_ring_hp", GameTF() ? "4" : "2", "How much HP is regenerated per second");
 
@@ -190,19 +186,6 @@ public OnWar3EventDeath(client)
 
 public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast)
 {
-<<<<<<< HEAD
-    if(GameCSANY())
-    {
-        if(!GetConVarBool(hMoleDeathmatchAllowedCvar))
-        {
-            for(new x=1; x <= MaxClients; x++)
-            {
-                if(ValidPlayer(x, true) && GetClientTeam(x) > TEAM_SPECTATOR && 
-                   War3_GetOwnsItem(x, iShopitem[ITEM_MOLE]))
-                {
-                    StartMole(x);
-                }
-=======
     if(!GetConVarBool(hMoleDeathmatchAllowedCvar))
     {
         for(new x=1; x <= MaxClients; x++)
@@ -211,7 +194,6 @@ public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast)
                War3_GetOwnsItem(x, iShopitem[ITEM_MOLE]))
             {
                 StartMole(x);
->>>>>>> Updated 2.0 verison
             }
         }
     }
@@ -235,11 +217,7 @@ public OnWar3EventSpawn(client)
         War3_SetBuffItem(client, fSlow, iShopitem[ITEM_FROST], 1.0);
     }
 
-<<<<<<< HEAD
-    if(War3_GetGame() == Game_CS && 
-=======
     if(GAMECSANY && 
->>>>>>> Updated 2.0 verison
        War3_GetOwnsItem(client, iShopitem[ITEM_ANKH]) && bDidDie[client])
     {
         if(!bSpawnedViaScrollRespawn[client])
@@ -525,15 +503,10 @@ public Action:GivePlayerCachedDeathWPNFull(Handle:h,any:client)
             }
         }
         
-<<<<<<< HEAD
-        War3_SetCSArmor(client, 100);
-        War3_SetCSArmorHasHelmet(client, true);
-=======
         if( GAMECSANY )
         {
             War3_RestoreCachedCSArmor(client);
         }
->>>>>>> Updated 2.0 verison
     }
 }
 
