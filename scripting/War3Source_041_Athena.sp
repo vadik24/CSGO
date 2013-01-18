@@ -18,20 +18,20 @@ new thisRaceID;
 new SKILL_SPEAR, SKILL_NECK, SKILL_HELM, ULT_MEDUSA;
 
 //skill 1
-new Float:SpearPercent[6]={0.0, 0.2, 0.3, 0.4, 0.5, 0.6};
-new Float:SpearChance[6]={0.0, 0.12, 0.18, 0.22, 0.28, 0.33};
+new Float:SpearPercent[6]={0.0, 0.1, 0.2, 0.3, 0.4, 0.55};
+new Float:SpearChance[6]={0.0, 0.13, 0.20, 0.25, 0.30, 0.35};
 
 //skill 2
 new Float:NeckChance[6]={0.0, 0.55, 0.65, 0.75, 0.85, 0.95};
 
 //skill 3 
-new Float:HelmetChance[6]={0.0, 0.55, 0.65, 0.75, 0.85, 0.95};
+new Float:HelmetChance[6]={0.0, 0.45, 0.55, 0.65, 0.75, 0.90};
 
 
 
 //skill 4
-new Float:MedusasDistance[6]={0.0, 500.0, 550.0, 600.0, 650.0, 700.0};
-new Float:MedusasDuration[6]={0.0, 1.25, 1.5, 1.75, 2.0, 2.25};
+new Float:MedusasDistance[6]={0.0, 450.0, 500.0, 525.0, 575.0, 600.0};
+new Float:MedusasDuration[6]={0.0, 1.0, 1.25, 1.5, 1.75, 2.0};
 new String:MedusaSound[]="war3source/entanglingrootsdecay1.mp3";
 new bool:bIsPetrified[MAXPLAYERS];
 new Handle:MedusaNoShootCvar;//cannot shoot?
@@ -65,7 +65,7 @@ public OnWar3LoadRaceOrItemOrdered2(num)
 
 public OnPluginStart()
 {
-	MedusaCooldownCvar=CreateConVar("war3_athena_ult_cooldown","20.0","Cooldown timer");
+	MedusaCooldownCvar=CreateConVar("war3_athena_ult_cooldown","30.0","Cooldown timer");
 	MedusaNoShootCvar=CreateConVar("war3_athena_ult_noshoot","0","Disable shooting when petrified?");
 	LoadTranslations("w3s.race.athena.phrases");
 }
