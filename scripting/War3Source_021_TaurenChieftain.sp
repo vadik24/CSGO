@@ -35,8 +35,8 @@ new Float:EnduranceArr[9]={1.0,1.09,1.12,1.15,1.18,1.21,1.24,1.27,1.3};
 //skill 4
 new bool:bReincarnation[66] = {false, ...};
 new Float:ReincarnationChance[9]={0.0,0.25,0.3,0.35,0.40,0.45,0.50,0.55,0.60};
-new String:StompSnd[]="npc/ichthyosaur/attack_growl3.wav";
-new String:StompSnd2[]="weapons/mortar/mortar_explode1.wav";
+new String:StompSnd[]="npc/ichthyosaur/attack_growl3.mp3";
+new String:StompSnd2[]="weapons/mortar/mortar_explode1.mp3";
 
 new SKILL_SHOCKWAVE, SKILL_WARSTOMP, SKILL_ENDURANCE, ULT_REINCARNATION;
 new BeamSprite,FlameSprite, HaloSprite; 
