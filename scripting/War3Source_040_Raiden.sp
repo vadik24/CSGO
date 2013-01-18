@@ -19,13 +19,13 @@ new thisRaceID;
 
 // Chance/Data Arrays
 // skill 1
-new Float:DMG1Multiplier[6] = { 0.0, 0.75, 0.99, 1.15, 1.3, 1.5 };
+new Float:DMG1Multiplier[6] = { 0.0, 0.75, 0.99, 1.1, 1.2, 1.4 };
 
 // skill 2
 new Float:DMG2Multiplier[6] = { 0.0, 0.50, 0.70, 0.85, 1.0, 1.2 };
 
 // skill 3
-new Float:DMG3Multiplier[6] = { 0.0, 0.70, 0.80, 0.90, 1.1, 1.3 };
+new Float:DMG3Multiplier[6] = { 0.0, 0.70, 0.80, 0.90, 1.1, 1.2 };
 
 // skill 4
 new Float:ShakeTime[6] = { 0.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
@@ -33,7 +33,7 @@ new Float:ShakeTime[6] = { 0.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
 // skill 5
 #define MAXWARDS 64*4
 #define WARDRADIUS 95
-#define WARDDAMAGE 15
+#define WARDDAMAGE 10
 #define WARDBELOW -2.0
 #define WARDABOVE 140.0
 
