@@ -18,7 +18,7 @@ new Float:SuicideBomberDamageTF[5] = {0.0, 133.0, 175.0, 250.0, 300.0};
 
 new Float:UnholySpeed[5] = {1.0, 1.1, 1.2, 1.3, 1.35};
 new Float:LevitationGravity[5] = {1.0, 0.85, 0.7, 0.6, 0.5};
-new Float:VampirePercent[5] = {0.0, 0.1, 0.15, 0.22, 0.30};
+new Float:VampirePercent[5] = {0.0, 0.15, 0.22, 0.29, 0.35};
 
 new SKILL_LEECH, SKILL_SPEED, SKILL_LOWGRAV, SKILL_SUICIDE;
 
