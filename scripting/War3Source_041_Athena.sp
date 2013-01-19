@@ -74,7 +74,7 @@ public OnMapStart()
 {
 	BeamSprite=War3_PrecacheBeamSprite();
 	HaloSprite=War3_PrecacheHaloSprite();
-	
+
 	////War3_PrecacheSound(MedusaSound);
 }
 
@@ -259,19 +259,19 @@ public OnUltimateCommand(client,race,bool:pressed)
 		if(ult_level_medusa>0)
 		{
 			if(!Silenced(client)&&War3_SkillNotInCooldown(client,thisRaceID,ULT_MEDUSA,true)){
-				
+
 				new Float:distance=MedusasDistance[ult_level_medusa];
 				new target; // easy support for both
-				
+
 				new Float:our_pos[3];
 				GetClientAbsOrigin(client,our_pos);
-			
+
 				target=War3_GetTargetInViewCone(client,distance,false,60.0,ImmunityCheck);
 				if(ValidPlayer(target,true))
 				{
-				
+
 					bIsPetrified[target]=true;
-				
+
 					War3_SetBuff(target,bNoMoveMode,thisRaceID,true);
 					new Float:petrification_time=MedusasDuration[ult_level_medusa];
 					CreateTimer(petrification_time,StopPetrification,target);
@@ -288,12 +288,12 @@ public OnUltimateCommand(client,race,bool:pressed)
 					TE_SendToAll();
 					new String:name[64];
 					GetClientName(target,name,64);
-					
+
 					//EmitSoundToAll(MedusaSound,target);
 					//EmitSoundToAll(MedusaSound,target);
-					
+
 					War3_ChatMessage(target,"%T","You have been petrified by Medusa's Gaze!",target);
-				
+
 					new Float:CooldownTime = GetConVarFloat(MedusaCooldownCvar);
 					War3_CooldownMGR(client,CooldownTime,thisRaceID,ULT_MEDUSA,_,_);
 				}
@@ -315,7 +315,7 @@ public Action:StopPetrification(Handle:timer,any:client)
 
 	bIsPetrified[client]=false;
 	War3_SetBuff(client,bNoMoveMode,thisRaceID,false);
-	
+
 }
 
 // =================================================================================================

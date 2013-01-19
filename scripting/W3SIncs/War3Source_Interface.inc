@@ -1484,7 +1484,10 @@ stock W3MsgNoLongerDisguised(client) {
 stock W3MsgVengenceWasBlocked(client,String:reason[]) {
     War3_ChatMessage(client,"%T","Vengence blocked ({reason})",client,reason);
 }
-
+stock W3MsgEvaded(victim,attacker){
+	PrintHintText(victim,"%T","You Evaded a Shot",victim);
+	PrintHintText(attacker,"%T","Enemy Evaded",attacker);
+}
 native W3IsBuffInvised(client); //returns true if client alpha is <50
 
 //invisible or cloaked?

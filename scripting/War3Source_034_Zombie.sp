@@ -133,14 +133,14 @@ public ActivateSkills(client)
 		/*if(ValidPlayer(client,true))
 		{
 			new ClientTeam = GetClientTeam(client);
-			/*switch(ClientTeam)
+			switch(ClientTeam)
 			{
 				case 3:
 					SetEntityModel(client, ZombieCT);
 				case 2:
 					SetEntityModel(client, ZombieT);
 			}
-			*/
+			
 		}
 		*/
 	}

@@ -110,8 +110,8 @@ public OnMapStart()
 	FlameSprite=PrecacheModel("sprites/fireburst.vmt");
 	BeamSprite=PrecacheModel("materials/sprites/lgtning.vmt");
 	HaloSprite=PrecacheModel("materials/sprites/halo01.vmt");
-	War3_PrecacheSound(StompSnd);
-	War3_PrecacheSound(StompSnd2);
+	//War3_PrecacheSound(StompSnd);
+	//War3_PrecacheSound(StompSnd2);
 }
 
 public OnAbilityCommand(client,ability,bool:pressed)
@@ -125,7 +125,7 @@ public OnAbilityCommand(client,ability,bool:pressed)
 			{
 				if(!Silenced(client))
 				{
-					EmitSoundToAll(StompSnd,client);
+					//EmitSoundToAll(StompSnd,client);
 					GetClientAbsOrigin(client,WarStompOrigin[client]);
 					WarStompOrigin[client][2]+=15.0;
 					WarStompLoopCountdown[client]=20;
@@ -153,7 +153,7 @@ public OnAbilityCommand(client,ability,bool:pressed)
 
 public Action:StompSound(Handle:timer,any:client)
 {
-	EmitSoundToAll(StompSnd2,client);
+	//EmitSoundToAll(StompSnd2,client);
 }
 
 public Action:BurnLoop(Handle:timer,any:attacker)
