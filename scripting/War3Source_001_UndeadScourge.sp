@@ -32,8 +32,8 @@ public OnWar3LoadRaceOrItemOrdered(num)
     if(num == 10)
     {
         thisRaceID = War3_CreateNewRaceT("undead");
-        SKILL_LEECH = War3_AddRaceSkillT(thisRaceID, "VampiricAura", false, 4, "25%");
-        SKILL_SPEED = War3_AddRaceSkillT(thisRaceID, "UnholyAura", false, 4, "20%");
+        SKILL_LEECH = War3_AddRaceSkillT(thisRaceID, "VampiricAura", false, 4, "35%");
+        SKILL_SPEED = War3_AddRaceSkillT(thisRaceID, "UnholyAura", false, 4, "35%");
         SKILL_LOWGRAV = War3_AddRaceSkillT(thisRaceID, "Levitation", false, 4, "0.5");
         SKILL_SUICIDE = War3_AddRaceSkillT(thisRaceID, "SuicideBomber", true, 4); 
         
