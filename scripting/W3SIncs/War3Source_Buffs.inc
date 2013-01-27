@@ -8,6 +8,13 @@
 //                             NATIVE / STOCKS
 //=======================================================================
 
+// Easy natives to apply a W3Buff based on a skill/item
+native War3_AddSkillBuff(raceID, skill, W3Buff:buff, any:values[]);
+native War3_AddItemBuff(itemID, W3Buff:buff, any:value);
+native War3_AddAuraSkillBuff(raceID, skill, W3Buff:buff, any:values[], 
+                             String:auraShortName[], Float:distance, 
+                             bool:trackotherteam);
+
 //is a buff index valid? X > 0 and X <  MaxBuffLoopLimitTemp
 stock ValidBuff(W3Buff:buffindex) {
     if(_:buffindex>=0&&_:buffindex<MaxBuffLoopLimit) {
@@ -31,11 +38,6 @@ native War3_SetBuff(client,W3Buff:buffindex,raceid,any:value);
  */
 native War3_SetBuffItem(client,W3Buff:buffindex,itemid,any:value);
 native W3BuffCustomOFFSET(); //get offset for custom buff modifier indexes. use War3_SetBuffItem(client,buffindex,W3BuffCustomOFFSET() + NUMBER,value) (YES, ITEM)
-//not implemented
-//simple buff application which the plugin does internal tracking so you don't have to
-//given a race, buffindex, and its value, applies that buff for a certain duration then calls buffReset 
-//@allowReapplyToExtendDuration if true, means a new call to the same race-buff combination will renew its duration, otherwise it will be blocked and the existing duration is kept
-native W3ApplyBuffSimple(client,W3Buff:buffindex,raceid,any:appliedBuffValue,Float:duration,bool:allowReapplyToExtendDuration=true);
 
 ///RESETS a particular buff from your race on this client
 native W3ResetBuffRace(client,W3Buff:buffindex,raceid);
@@ -75,10 +77,6 @@ native W3GetBuffMinInt(client,W3Buff:buffindex);
 //calculate player speed next frame
 native W3ReapplySpeed(client);
 native W3GetSpeedMulti(client); //get the effective speed multipler for TF
-
-native War3_AddSkillBuff(raceID, skill, W3Buff:buff, any:values[]);
-native War3_AddItemBuff(itemID, W3Buff:buff, any:value);
-
 
 stock bool:W3HasImmunity(client,War3Immunity:immunityindex) 
 {
@@ -171,7 +169,3 @@ stock bool:Perplexed(client,printmsg=true) {
     }
     return perplexed;
 }
-
-//=======================================================================
-//                             FORWARDS
-//=======================================================================

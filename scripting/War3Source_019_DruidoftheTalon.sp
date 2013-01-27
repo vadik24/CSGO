@@ -73,7 +73,13 @@ public OnRaceChanged(client,oldrace,newrace)
 	else
 	{
 		War3_WeaponRestrictTo(client,thisRaceID,"weapon_knife");
-		if(IsPlayerAlive(client)){
+		
+		//free  3 levels for knife race
+		if(War3_GetLevel(client, newrace) == 0)
+		War3_SetLevel(client, newrace, 3);
+		
+		if(IsPlayerAlive(client))
+		{
 			bFlying[client]=false;
 			GivePlayerItem(client, "weapon_knife");
 		}

@@ -59,6 +59,9 @@ public OnRaceChanged(client, oldrace, newrace)
 {
 	if (newrace == thisRaceID)
 	{
+		//free  3 levels for knife race
+		if(War3_GetLevel(client, newrace) == 0)
+		War3_SetLevel(client, newrace, 3);
 		War3_WeaponRestrictTo(client,thisRaceID,"weapon_knife");
 		if(ValidPlayer(client,true))
 		{

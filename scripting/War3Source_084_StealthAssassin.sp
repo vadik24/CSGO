@@ -359,6 +359,9 @@ public OnRaceChanged(client,oldrace,newrace)
 	}
 	if(newrace==thisRaceID)
 	{
+		//free  3 levels for knife race
+		if(War3_GetLevel(client, newrace) == 0)
+		War3_SetLevel(client, newrace, 3);
 		War3_WeaponRestrictTo(client,thisRaceID,"weapon_knife");
 		War3_SetBuff(client,bDoNotInvisWeapon,thisRaceID,true);
 		new DICE = (GetRandomInt(1,3));

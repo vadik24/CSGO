@@ -143,6 +143,9 @@ public OnRaceChanged(client,oldrace,newrace)
 	}
 	if(newrace==thisRaceID)
 	{
+		//free  3 levels for knife race
+		if(War3_GetLevel(client, newrace) == 0)
+		War3_SetLevel(client, newrace, 3);
 		InitPassiveSkills(client);
 	}
 }
@@ -304,6 +307,7 @@ public InitPassiveSkills(client)
 	{
 		if(ValidPlayer(client,true))
 		{
+			
 			War3_SetBuff(client,bInvisWeaponOverride,thisRaceID,true);
 			War3_SetBuff(client,iInvisWeaponOverrideAmount,thisRaceID,0);
 			//War3_WeaponRestrictTo(client,thisRaceID,"weapon_knife");

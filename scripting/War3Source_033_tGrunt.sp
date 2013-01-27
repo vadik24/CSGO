@@ -52,6 +52,7 @@ public OnWar3EventSpawn(client)
 {
 	if(War3_GetRace(client)==thisRaceID&&ValidPlayer(client,true))
 	{
+
 		War3_WeaponRestrictTo(client,thisRaceID,"weapon_knife,weapon_fiveseven");
 		GivePlayerItem(client,"weapon_fiveseven");
 		HPbonus(client);
@@ -66,6 +67,9 @@ public OnRaceChanged(client,oldrace,newrace)
 	}
 	if(newrace==thisRaceID)
 	{
+		//free  3 levels for knife race
+		if(War3_GetLevel(client, newrace) == 0)
+		War3_SetLevel(client, newrace, 3);
 		War3_WeaponRestrictTo(client,thisRaceID,"weapon_knife,weapon_fiveseven");
 		if(ValidPlayer(client,true))
 		{
