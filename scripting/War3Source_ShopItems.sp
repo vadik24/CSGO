@@ -89,6 +89,7 @@ public OnPluginStart()
 
 public OnWar3LoadRaceOrItemOrdered(num)
 {
+<<<<<<< HEAD
     if(num == 10)
     {
         bItemsLoaded=true;
@@ -133,6 +134,56 @@ public OnWar3LoadRaceOrItemOrdered(num)
         War3_AddItemBuff(iShopitem[ITEM_BOOTS], fMaxSpeed, GetConVarFloat(hBootsSpeedCvar));
         War3_AddItemBuff(iShopitem[ITEM_MASK], fVampirePercent, GetConVarFloat(hMaskLeechCvar));
     }
+=======
+	if(num==10){
+	
+		war3ready=true;
+		for(new x=0;x<MAXITEMS;x++)
+			shopItem[x]=0;
+		if(GAMECSANY) 
+			shopItem[ANKH]=War3_CreateShopItemT("ankh",3,2000);
+		
+		shopItem[BOOTS]=War3_CreateShopItemT("boot",2,2500);
+		
+		shopItem[CLAW]=War3_CreateShopItemT("claw",3,5000);
+		
+		shopItem[CLOAK]=War3_CreateShopItemT("cloak",2,1000);
+		
+		shopItem[MASK]=War3_CreateShopItemT("mask",3,1500);
+		
+		shopItem[NECKLACE]=War3_CreateShopItemT("lace",2,800);
+		//War3_CreateShopItemRef(shopItem[NECKLACE],"necklace_immunity");
+		
+		//if(War3_GetGame()!=Game_TF) 
+		shopItem[FROST]=War3_CreateShopItemT("orb",3,2000);
+		
+		shopItem[RING]=War3_CreateShopItemT("ring",3,1500);
+		
+		
+		if(War3_GetGame()!=Game_TF) 
+			shopItem[HEALTH]=War3_CreateShopItemT("health",3,3000);
+		
+		shopItem[TOME]=War3_CreateShopItemT("tome",10,10000);
+		War3_SetItemProperty(	shopItem[TOME], ITEM_USED_ON_BUY,true);
+	
+		if(War3_GetGame()!=Game_TF) 
+			shopItem[RESPAWN]=War3_CreateShopItemT("scroll",15,6000);
+		
+		shopItem[SOCK]=War3_CreateShopItemT("sock",2,1500);
+		
+		if(GAMECSANY) 
+			shopItem[GLOVES]=War3_CreateShopItemT("glove",5,3000);
+		
+		
+		if(War3_GetGame()!=Game_TF) 
+			shopItem[MOLE]=War3_CreateShopItemT("mole",10,10000);
+		
+
+	
+	}
+	
+	
+>>>>>>> origin/Warcraft-2.1
 }
 
 public OnMapStart()
@@ -591,6 +642,7 @@ public Action:PointOneSecondLoop(Handle:timer, any:data)
     }
 }
 
+<<<<<<< HEAD
 //gloves giving nades
 public Action:GrenadeLoop(Handle:timer, any:data)
 {
@@ -622,4 +674,11 @@ public Action:GrenadeLoop(Handle:timer, any:data)
             }
         }
     }
+=======
+
+public OnWar3Event(W3EVENT:event,client){
+	if(event==ClearPlayerVariables){
+		bDidDie[client]=false;
+	}
+>>>>>>> origin/Warcraft-2.1
 }
