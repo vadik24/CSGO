@@ -1,3 +1,33 @@
+/**
+ * vim: set ts=4 :
+ * =============================================================================
+ * SourceMod (C)2009-2013 AlliedModders LLC.  All rights reserved.
+ * =============================================================================
+ *
+ * This file is part of the SourceMod/SourcePawn SDK.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, version 3.0, as published by the
+ * Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * As a special exception, AlliedModders LLC gives you permission to link the
+ * code of this program (as well as its derivative works) to "Half-Life 2," the
+ * "Source Engine," the "SourcePawn JIT," and any Game MODs that run on software
+ * by the Valve Corporation.  You must obey the GNU General Public License in
+ * all respects for all other code used.  Additionally, AlliedModders LLC grants
+ * this exception to all derivative works.  AlliedModders LLC defines further
+ * exceptions, found in LICENSE.txt (as of this writing, version JULY-31-2007),
+ * or <http://www.sourcemod.net/license.php>.
+ */
+
 #if defined _sdkhooks_included
  #endinput
 #endif
@@ -83,7 +113,10 @@ enum SDKHookType
 	SDKHook_WeaponEquipPost,
 	SDKHook_WeaponSwitchPost,
 	SDKHook_Use,
-	SDKHook_UsePost
+	SDKHook_UsePost,
+	SDKHook_Reload,
+	SDKHook_ReloadPost,
+	SDKHook_GetMaxHealth,  // ep2v and later
 };
 
 /*
@@ -93,6 +126,8 @@ enum SDKHookType
 	SDKHook_EndTouchPost,
 	
 	SDKHook_FireBulletsPost,
+	
+	SDKHook_GetMaxHealth,  (ep2v and later)
 	
 	SDKHook_GroundEntChangedPost,
 	
@@ -104,6 +139,9 @@ enum SDKHookType
 	
 	SDKHook_PostThink,
 	SDKHook_PostThinkPost,
+	
+	SDKHook_Reload,
+	SDKHook_ReloadPost,
 	
 	SDKHook_SetTransmit,
 	
@@ -160,8 +198,11 @@ funcenum SDKHookCB
 	// PostThink/Post
 	public(client),
 	
+	// Spawn
+	Action:public(entity),
+	
 	// GroundEntChanged
-	// Spawn/Post
+	// SpawnPost
 	// Think/Post
 	// VPhysicsUpdate/Post
 	public(entity),
@@ -193,10 +234,20 @@ funcenum SDKHookCB
 	// WeaponSwitchPost
 	public(client, weapon),
 	
+	// GetMaxHealth (ep2v and later)
+	Action:public(entity, &maxhealth),
+	
 	// OnTakeDamage
+	// Note: The weapon parameter is not used by all games and damage sources.
 	// Note: Force application is dependent on game and damage type(s)
+	// SDKHooks 1.0+
 	Action:public(victim, &attacker, &inflictor, &Float:damage, &damagetype),
+	// SDKHooks 2.0+
 	Action:public(victim, &attacker, &inflictor, &Float:damage, &damagetype, &weapon, Float:damageForce[3], Float:damagePosition[3]),
+	// SDKHooks 2.1+  (can check for support at runtime using GetFeatureStatus on SDKHook_DmgCustomInOTD capability.
+	// DON'T attempt to access 'damagecustom' var if feature status != available
+	Action:public(victim, &attacker, &inflictor, &Float:damage, &damagetype, &weapon,
+		Float:damageForce[3], Float:damagePosition[3], damagecustom),
 	
 	// OnTakeDamagePost
 	public(victim, attacker, inflictor, Float:damage, damagetype),
@@ -218,7 +269,13 @@ funcenum SDKHookCB
 	Action:public(entity, activator, caller, UseType:type, Float:value),
 	
 	// UsePost
-	public(entity, activator, caller, UseType:type, Float:value)
+	public(entity, activator, caller, UseType:type, Float:value),
+	
+	// Reload
+	Action:public(weapon),
+	
+	// Reload post
+	public(weapon, bool:bSuccessful)
 };
 
 
@@ -241,6 +298,8 @@ forward OnEntityDestroyed(entity);
 
 /**
  * @brief When the game description is retrieved
+ *
+ * @note  Not supported on ep2v.
  *
  * @param		gameDesc		Game description
  * @noreturn
@@ -315,11 +374,12 @@ native SDKHooks_TakeDamage(entity, inflictor, attacker, Float:damage, damageType
  */
 native SDKHooks_DropWeapon(client, weapon, const Float:vecTarget[3]=NULL_VECTOR, const Float:vecVelocity[3]=NULL_VECTOR);
 
-/** Do Not Edit Below This Line **/
-
-public Extension:__ext_sdkhooks =
+/**
+ * Do not edit below this line!
+ */
+public Extension:__ext_sdkhooks = 
 {
-	name = "sdkhooks",
+	name = "SDKHooks",
 	file = "sdkhooks.ext",
 #if defined AUTOLOAD_EXTENSIONS
 	autoload = 1,
@@ -332,14 +392,3 @@ public Extension:__ext_sdkhooks =
 	required = 0,
 #endif
 };
-
-#if !defined REQUIRE_EXTENSIONS
-public __ext_sdkhooks_SetNTVOptional()
-{
-	MarkNativeAsOptional("SDKHook");
-	MarkNativeAsOptional("SDKHookEx");
-	MarkNativeAsOptional("SDKUnhook");
-	MarkNativeAsOptional("SDKHooks_TakeDamage");
-	MarkNativeAsOptional("SDKHooks_DropWeapon");
-}
-#endif
