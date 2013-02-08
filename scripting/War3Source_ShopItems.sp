@@ -89,7 +89,6 @@ public OnPluginStart()
 
 public OnWar3LoadRaceOrItemOrdered(num)
 {
-<<<<<<< HEAD
     if(num == 10)
     {
         bItemsLoaded=true;
@@ -134,7 +133,6 @@ public OnWar3LoadRaceOrItemOrdered(num)
         War3_AddItemBuff(iShopitem[ITEM_BOOTS], fMaxSpeed, GetConVarFloat(hBootsSpeedCvar));
         War3_AddItemBuff(iShopitem[ITEM_MASK], fVampirePercent, GetConVarFloat(hMaskLeechCvar));
     }
-=======
 	if(num==10){
 	
 		war3ready=true;
@@ -183,7 +181,6 @@ public OnWar3LoadRaceOrItemOrdered(num)
 	}
 	
 	
->>>>>>> origin/Warcraft-2.1
 }
 
 public OnMapStart()
