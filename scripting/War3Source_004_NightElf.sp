@@ -21,7 +21,7 @@ new Handle:EntangleCooldownCvar;
 new SKILL_EVADE, SKILL_THORNS, SKILL_TRUESHOT, ULT_ENTANGLE;
 
 // Chance/Data Arrays
-new Float:fEvadeChance[5] = {0.0, 0.05, 0.07, 0.13, 0.15};
+new Float:fEvadeChance[5] = {0.0, 0.05, 0.010, 0.15, 0.20};
 new Float:ThornsReturnDamage[5] = {0.0, 0.05, 0.10, 0.15, 0.20};
 new Float:TrueshotDamagePercent[5] = {1.0, 1.05, 1.10, 1.15, 1.20};
 new Float:EntangleDistance = 600.0;
