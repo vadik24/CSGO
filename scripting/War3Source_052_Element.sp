@@ -76,7 +76,7 @@ public OnWar3PluginReady()
 {
 	thisRaceID = War3_CreateNewRace( "Element", "element" );
 	
-	SKILL_ATTACK = War3_AddRaceSkill( thisRaceID, "ImpulseRifle", "Do more Damage and Disentegrate the enemie", false, 5 );	
+	SKILL_ATTACK = War3_AddRaceSkill( thisRaceID, "ImpulseRifle", "Do more Damage and Disintegrate the enemy", false, 5 );	
 	SKILL_SPEED = War3_AddRaceSkill( thisRaceID, "Transport", "Go a little faster", false, 5 );	
 	SKILL_TIME = War3_AddRaceSkill( thisRaceID, "Times Element", "Go back to the exact moment before death", false, 5 );
 	ULT_PUSH = War3_AddRaceSkill( thisRaceID, "Gravity Gun", "Pull the enemy player torward you", true, 5 );
