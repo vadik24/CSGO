@@ -165,12 +165,12 @@ public OnMapStart()
 	if(War3_GetGame()==Game_TF)
 	{
 		ExplosionModel=PrecacheModel("materials/particles/fluidexplosions/fluidexplosion.vmt",false);
-		PrecacheSound("weapons/explode1.mp3",false);
+		//PrecacheSound("weapons/explode1.mp3",false);
 	}
 	else
 	{
 		ExplosionModel=PrecacheModel("materials/sprites/zerogxplode.vmt",false);
-		PrecacheSound("weapons/explode5.mp3",false);
+		//PrecacheSound("weapons/explode5.mp3",false);
 	}
 	
 	BeamSprite=War3_PrecacheBeamSprite();

@@ -92,8 +92,7 @@ public OnWar3LoadRaceOrItemOrdered2(num)
 public OnMapStart()
 {
 	
-	// PrecacheModel("models/player/slow/aliendrone_v3/slow_alien_head.mdl", true);
-	// PrecacheModel("models/player/slow/aliendrone_v3/slow_alien_hs.mdl", true);
+	PrecacheModel("models/player/mapeadores/kaem/alien/alien.mdl", true);
 	
 	BeamSprite=War3_PrecacheBeamSprite();
 	HaloSprite=War3_PrecacheHaloSprite();
@@ -112,6 +111,7 @@ public OnWar3EventSpawn(client)
 		W3ResetBuffRace(client,fInvisibilitySkill,thisRaceID); 
 		ActivateSkills(client);
 		GivePlayerItem(client, "weapon_knife");
+		SetEntityModel(client,"models/player/mapeadores/kaem/alien/alien.mdl");
 		new ClientTeam = GetClientTeam(client);
 		switch(ClientTeam)
 		{
@@ -263,6 +263,7 @@ public OnRaceChanged(client,oldrace,newrace)
 		if(War3_GetLevel(client, newrace) == 0)
 		War3_SetLevel(client, newrace, 3);
 		ActivateSkills(client); 
+		SetEntityModel(client,"models/player/mapeadores/kaem/alien/alien.mdl");
 		War3_WeaponRestrictTo(client,thisRaceID,"weapon_knife");
 		if(IsPlayerAlive(client))
 		{

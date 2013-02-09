@@ -16,7 +16,7 @@ public Plugin:myinfo =
 };
 
 new thisRaceID;
-
+new LightningSprite, HaloSprite, GlowSprite, PurpleGlowSprite;
 new SKILL_HEALINGWAVE, SKILL_HEX, SKILL_WARD, ULT_VOODOO;
 
 //skill 1
@@ -28,8 +28,19 @@ new ParticleEffect[MAXPLAYERSCUSTOM][MAXPLAYERSCUSTOM]; // ParticleEffect[Source
 new Float:HexChanceArr[]={0.00,0.02,0.050,0.075,0.100};
 
 //skill 3
-new MaximumWards[]={0,1,2,3,4}; 
-new WardDamage[]={0,1,2,3,4};
+
+#define MAXWARDS 64*4
+#define WARDRADIUS 95
+#define WARDDAMAGE 10
+#define WARDBELOW -2.0
+#define WARDABOVE 140.0
+
+new WardStartingArr[] = { 0, 1, 2, 3, 4,};
+new Float:WardLocation[MAXWARDS][3];
+new CurrentWardCount[MAXPLAYERS];
+new Float:LastWardRing[MAXWARDS];
+new Float:LastWardClap[MAXWARDS];
+new WardOwner[MAXWARDS];
 
 new Float:LastThunderClap[MAXPLAYERSCUSTOM];
 
@@ -58,7 +69,7 @@ public OnPluginStart()
 {
 
     ultCooldownCvar=CreateConVar("war3_hunter_voodoo_cooldown","20","Cooldown between Big Bad Voodoo (ultimate)");
-    CreateTimer(1.0,CalcHexHealWaves,_,TIMER_REPEAT);
+    CreateTimer( 0.14, CalcWards, _, TIMER_REPEAT );
     
     LoadTranslations("w3s.race.hunter.phrases");
 }
@@ -85,7 +96,10 @@ public OnMapStart()
 {
     War3_AddSoundFolder(wardDamageSound, sizeof(wardDamageSound), "thunder_clap.mp3");
     War3_AddSoundFolder(ultimateSound, sizeof(ultimateSound), "divineshield.mp3");
-
+	LightningSprite = War3_PrecacheBeamSprite();
+	HaloSprite =       War3_PrecacheHaloSprite();
+	GlowSprite = PrecacheModel( "sprites/glow.vmt" );
+	PurpleGlowSprite = PrecacheModel( "sprites/purpleglow1.vmt" );
     War3_PrecacheSound(ultimateSound);
     War3_PrecacheSound(wardDamageSound);
 }
@@ -108,6 +122,7 @@ public OnRaceChanged(client,oldrace,newrace)
         //PrintToServer("deactivate aura");
         War3_SetBuff(client,bImmunitySkills,thisRaceID,false);
         W3SetAuraFromPlayer(AuraID,client,false);
+		RemoveWards( client );
     }
 }
 
@@ -162,60 +177,181 @@ public Action:EndVoodoo(Handle:timer,any:client)
     }
 }
 
-public OnAbilityCommand(client,ability,bool:pressed)
+
+public OnAbilityCommand( client, ability, bool:pressed )
 {
-    if(War3_GetRace(client)==thisRaceID && ability==0 && pressed && IsPlayerAlive(client))
-    {
-        new skill_level=War3_GetSkillLevel(client,thisRaceID,SKILL_WARD);
-        if(skill_level>0)
-        {
-            if(!Silenced(client)&&War3_GetWardCount(client)<MaximumWards[skill_level])
-            {
-                new iTeam=GetClientTeam(client);
-                new bool:conf_found=false;
-                if(War3_GetGame()==Game_TF)
-                {
-                    new Handle:hCheckEntities=War3_NearBuilding(client);
-                    new size_arr=0;
-                    if(hCheckEntities!=INVALID_HANDLE)
-                        size_arr=GetArraySize(hCheckEntities);
-                    for(new x=0;x<size_arr;x++)
-                    {
-                        new ent=GetArrayCell(hCheckEntities,x);
-                        if(!IsValidEdict(ent)) continue;
-                        new builder=GetEntPropEnt(ent,Prop_Send,"m_hBuilder");
-                        if(builder>0 && ValidPlayer(builder) && GetClientTeam(builder)!=iTeam)
-                        {
-                            conf_found=true;
-                            break;
-                        }
-                    }
-                    if(size_arr>0)
-                        CloseHandle(hCheckEntities);
-                }
-                if(conf_found)
-                {
-                    W3MsgWardLocationDeny(client);
-                }
-                else
-                {
-                    if(War3_IsCloaked(client))
-                    {
-                        W3MsgNoWardWhenInvis(client);
-                        return;
-                    }
-                    new Float:location[3];
-                    GetClientAbsOrigin(client, location);
-                    War3_CreateWard(client, location, 60, 300.0, 0.5, "damage", SKILL_WARD, WardDamage);
-                    W3MsgCreatedWard(client,War3_GetWardCount(client),MaximumWards[skill_level]);
-                }
-            }
-            else
-            {
-                W3MsgNoWardsLeft(client);
-            }    
-        }
-    }
+	if( War3_GetRace( client ) == thisRaceID && ability == 0 && pressed && IsPlayerAlive( client ) )
+	{
+		new skill_level = War3_GetSkillLevel( client, thisRaceID, SKILL_WARD );
+		if( skill_level > 0 )
+		{
+			if( !Silenced( client ) && CurrentWardCount[client] < WardStartingArr[skill_level] )
+			{
+				CreateWard( client );
+				CurrentWardCount[client]++;
+				W3MsgCreatedWard( client, CurrentWardCount[client], WardStartingArr[skill_level] );
+			}
+			else
+			{
+				W3MsgNoWardsLeft( client );
+			}
+		}
+	}
+}
+
+public CreateWard( client )
+{
+	for( new i = 0; i < MAXWARDS; i++ )
+	{
+		if( WardOwner[i] == 0 )
+		{
+			WardOwner[i] = client;
+			GetClientAbsOrigin( client, WardLocation[i] );
+			break;
+		}
+	}
+}
+
+
+public OnWar3EventSpawn( client )
+{
+	RemoveWards( client );
+}
+public RemoveWards( client )
+{
+	for( new i = 0; i < MAXWARDS; i++ )
+	{
+		if( WardOwner[i] == client )
+		{
+			WardOwner[i] = 0;
+			LastWardRing[i] = 0.0;
+			LastWardClap[i] = 0.0;
+		}
+	}
+	CurrentWardCount[client] = 0;
+}
+
+public Action:CalcWards( Handle:timer, any:userid )
+{
+	new client;
+	for( new i = 0; i < MAXWARDS; i++ )
+	{
+		if( WardOwner[i] != 0 )
+		{
+			client = WardOwner[i];
+			if( !ValidPlayer( client, true ) )
+			{
+				WardOwner[i] = 0;
+				--CurrentWardCount[client];
+			}
+			else
+			{
+				WardEffectAndDamage( client, i );
+			}
+		}
+	}
+}
+
+public WardEffectAndDamage( owner, wardindex )
+{
+	new ownerteam = GetClientTeam( owner );
+	new beamcolor[] = { 0, 0, 200, 255 };
+	if( ownerteam == 2 )
+	{
+		beamcolor[0] = 255;
+		beamcolor[1] = 0;
+		beamcolor[2] = 0;
+		beamcolor[3] = 255;
+	}
+
+	new Float:start_pos[3];
+	new Float:end_pos[3];
+	new Float:tempVec1[] = { 0.0, 0.0, WARDBELOW };
+	new Float:tempVec2[] = { 0.0, 0.0, WARDABOVE };
+
+	AddVectors( WardLocation[wardindex], tempVec1, start_pos );
+	AddVectors( WardLocation[wardindex], tempVec2, end_pos );
+
+	TE_SetupBeamPoints( start_pos, end_pos, LightningSprite, LightningSprite, 0, GetRandomInt( 30, 100 ), 0.17, 20.0, 20.0, 0, 0.0, beamcolor, 0 );
+	TE_SendToAll();
+
+	if( LastWardRing[wardindex] < GetGameTime() - 0.25 )
+	{
+		LastWardRing[wardindex] = GetGameTime();
+		TE_SetupBeamRingPoint( start_pos, 20.0, float( WARDRADIUS * 2 ), LightningSprite, LightningSprite, 0, 15, 1.0, 20.0, 1.0, { 255, 150, 70, 100 }, 10, FBEAM_ISACTIVE );
+		TE_SendToAll();
+	}
+
+	TE_SetupGlowSprite( end_pos, PurpleGlowSprite, 1.0, 1.25, 50 );
+	TE_SendToAll();
+
+	new Float:BeamXY[3];
+	for( new x = 0; x < 3; x++ ) BeamXY[x] = start_pos[x];
+	new Float:BeamZ = BeamXY[2];
+	BeamXY[2] = 0.0;
+
+	new Float:VictimPos[3];
+	new Float:tempZ;
+	for( new i = 1; i <= MaxClients; i++ )
+	{
+		if( ValidPlayer( i, true ) && GetClientTeam(i) != ownerteam )
+		{
+			GetClientAbsOrigin( i, VictimPos );
+			tempZ = VictimPos[2];
+			VictimPos[2] = 0.0;
+
+			if( GetVectorDistance( BeamXY, VictimPos ) < WARDRADIUS )
+			{
+				if( tempZ > BeamZ + WARDBELOW && tempZ < BeamZ + WARDABOVE )
+				{
+					if(W3HasImmunity(i,Immunity_Wards))
+					{
+						W3MsgSkillBlocked(i,_,"Wards");
+					}
+					else
+					{
+						if( LastWardClap[wardindex] < GetGameTime() - 1 )
+						{
+							new DamageScreen[4];
+							new Float:pos[3];
+
+							GetClientAbsOrigin( i, pos );
+
+							DamageScreen[0] = beamcolor[0];
+							DamageScreen[1] = beamcolor[1];
+							DamageScreen[2] = beamcolor[2];
+							DamageScreen[3] = 50;
+
+							W3FlashScreen( i, DamageScreen );
+
+							War3_DealDamage( i, WARDDAMAGE, owner, DMG_ENERGYBEAM, "wards", _, W3DMGTYPE_MAGIC );
+
+							War3_SetBuff( i, fSlow, thisRaceID, 0.7 );
+
+							CreateTimer( 2.0, StopSlow, i );
+
+							pos[2] += 40;
+
+							TE_SetupBeamPoints( start_pos, pos, LightningSprite, LightningSprite, 0, 0, 1.0, 10.0, 20.0, 0, 0.0, { 255, 150, 70, 255 }, 0 );
+							TE_SendToAll();
+
+							PrintToChat( i, "\x03You've come to the Kingdom of Raiden" );
+
+							LastWardClap[i] = GetGameTime();
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+public Action:StopSlow( Handle:timer, any:client )
+{
+	if( ValidPlayer( client, true ) )
+	{
+		War3_SetBuff( client, fSlow, thisRaceID, 1.0 );
+	}
 }
 
 
@@ -257,85 +393,10 @@ public OnW3TakeDmgAllPre(victim,attacker,Float:damage)
     return;
 }
 
-// Events
-public OnWar3EventSpawn(client){
-    bVoodoo[client]=false;
-    StopParticleEffect(client, true);
-}
-
-public OnClientDisconnect(client)
-{
-    StopParticleEffect(client, true);
-}
-
-public OnWar3EventDeath(victim, attacker)
-{
-    StopParticleEffect(victim, false);
-}
-
-public Action:CalcHexHealWaves(Handle:timer,any:userid)
-{
-    if(thisRaceID>0)
-    {
-        for(new i=1;i<=MaxClients;i++)
-        {
-            particled[i]=false;
-            if(ValidPlayer(i,true))
-            {
-                if(War3_GetRace(i)==thisRaceID)
-                {
-                    new bool:value=(GetRandomFloat(0.0,1.0)<=HexChanceArr[War3_GetSkillLevel(i,thisRaceID,SKILL_HEX)]&&!Hexed(i,false));
-                    War3_SetBuff(i,bImmunitySkills,thisRaceID,value);
-                }
-            }
-        }
-    }
-}
 public OnW3PlayerAuraStateChanged(client,aura,bool:inAura,level)
 {
     if(aura==AuraID)
     {
         War3_SetBuff(client,fHPRegen,thisRaceID,inAura?HealingWaveAmountArr[level]:0.0);
-    }
-}
-
-//=======================================================================
-//                  HEALING WAVE PARTICLE EFFECT (TF2 ONLY!)
-//=======================================================================
-
-StopParticleEffect(client, bKill)
-{
-    if(War3_GetGame() == Game_TF)
-    {
-        for(new i=1; i <= MaxClients; i++)
-        {
-            decl String:className[64];
-            decl String:className2[64];
-                
-            if(IsValidEdict(ParticleEffect[client][i]))
-                GetEdictClassname(ParticleEffect[client][i], className, sizeof(className));
-            if(IsValidEdict(ParticleEffect[i][client]))
-            GetEdictClassname(ParticleEffect[i][client], className2, sizeof(className2));
-            
-            if(StrEqual(className, "info_particle_system"))
-            {
-                AcceptEntityInput(ParticleEffect[client][i], "stop");
-                if(bKill)
-                {
-                    AcceptEntityInput(ParticleEffect[client][i], "kill");
-                    ParticleEffect[client][i] = 0;
-                }
-            }
-            
-            if(StrEqual(className2, "info_particle_system"))
-            {
-                AcceptEntityInput(ParticleEffect[i][client], "stop");
-                if(bKill)
-                {
-                    AcceptEntityInput(ParticleEffect[i][client], "kill");
-                    ParticleEffect[i][client] = 0;
-                }
-            }
-        }
     }
 }

@@ -13,7 +13,7 @@
 #include <sdkhooks>
 
 new thisRaceID;
-new String:ZombieT[]="models/zombie.mdl";
+new String:ZombieT[]="models/player/mapeadores/morell/amnesia/grunt/grunt.mdl";
 new String:ZombieCT[]="models/player/mapeadores/kaem/zh/zh1.mdl";
 new String:BrainsSound0[]="music/war3source/zombiesch/brains1.mp3";
 new String:BrainsSound1[]="music/war3source/zombiesch/brains2.mp3";
@@ -65,7 +65,7 @@ public OnMapStart()
 	////War3_PrecacheSound(ClawSound1);
 	////War3_PrecacheSound(ClawSound2);
 	////War3_PrecacheSound(SpawnSound);
-	//PrecacheModel(ZombieT, true);
+	PrecacheModel(ZombieT, true);
 	//PrecacheModel(ZombieCT, true);
 }
 
@@ -133,19 +133,20 @@ public ActivateSkills(client)
 		//War3_SetBuff(client,fSlow,thisRaceID,0.8);
 		NormalSpeed(client);
 		
-		/*if(ValidPlayer(client,true))
+		new ClientTeam = GetClientTeam(client);
+		SetEntityModel(client, ZombieT);
+		if(ClientTeam==3)
 		{
-			new ClientTeam = GetClientTeam(client);
-			switch(ClientTeam)
-			{
-				case 3:
-					SetEntityModel(client, ZombieCT);
-				case 2:
-					SetEntityModel(client, ZombieT);
-			}
-			
+			W3SetPlayerColor(client,thisRaceID,20,100,200,255,1);
 		}
-		*/
+		else if(ClientTeam==2)
+		{
+			W3SetPlayerColor(client,thisRaceID,220,50,0,255,1);
+		}
+		else
+		{
+			W3ResetPlayerColor(client,thisRaceID);
+		}
 	}
 }
 

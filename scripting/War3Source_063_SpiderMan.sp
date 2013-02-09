@@ -121,7 +121,8 @@ public OnW3TakeDmgBulletPre(victim,attacker,Float:damage)
 					
 					W3FlashScreen(victim,RGBA_COLOR_BLUE);
 										
-					W3MsgEvaded(victim,attacker);
+					PrintHintText(victim,"%T","You Evaded a Shot",victim);
+					PrintHintText(attacker,"%T","Enemy Evaded",attacker);
 					
 					if(War3_GetGame()==Game_TF)
 					{

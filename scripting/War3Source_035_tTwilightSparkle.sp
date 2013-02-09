@@ -84,7 +84,7 @@ public OnWar3EventPostHurt(victim,attacker,dmgamount,bool:isWarcraft){
 		new level=War3_GetSkillLevel(attacker,thisRaceID,SKILL_MAGIC_OBEDIENCE);
 		if(level){
 			if(W3Chance(obediencechance[level]*W3ChanceModifier(attacker))  && !Hexed(attacker) &&!W3HasImmunity(victim,Immunity_Skills) ){
-				W3ApplyBuffSimple(victim,bSilenced,thisRaceID,true,2.0); 
+				//W3ApplyBuffSimple(victim,bSilenced,thisRaceID,true,2.0); 
 				new String:name[33];
 				GetClientName(victim,name,sizeof(name));
 				PrintHintText(attacker,"You silenced %s",name);

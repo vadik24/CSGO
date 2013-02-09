@@ -13,7 +13,7 @@ new MaximumDamage[5]={15,18,24,29,30};
 new Float:Chance[5]={0.00,0.20,0.25,0.28,0.30};
 new Float:RadiusStorm[5]={0.00,0.20,0.25,0.28,0.30};
 new Float:PitSlow[5]={0.00,0.70,0.65,0.60,0.52};
-new Float:PitMaxDistance[5]={0.00,350.0,400.0,800.0,1200.0};
+new Float:PitMaxDistance[5]={0.00,700.0,800.0,1600.0,2400.0};
 new Float:ult_delay[5]={0.0,6.5,5.0,3.5,1.95};
 
 new Float:AzgalorPos[3];
@@ -425,68 +425,43 @@ stock TE_SetupDynamicLight(const Float:vecOrigin[3], r,g,b,iExponent,Float:fRadi
 //DoFire(angreifer, getroffener, radius, schaden
 public DoFire(attacker,victim,Float:radius,damage,maxdmg,bool:showmsg)
 {
-	if(ValidPlayer(victim,true)&&ValidPlayer(attacker,true)){
-		//if(IsPlayerAlive(victim)&&IsPlayerAlive(attacker));
-		//{
-			if(War3_GetRace(attacker)==thisRaceID && War3_GetRace(victim)!=War3_GetRaceIDByShortname("azgalor"))
+	if(ValidPlayer(victim,true)&&ValidPlayer(attacker,true))
+	{
+		if(War3_GetRace(attacker)==thisRaceID && War3_GetRace(victim)!=War3_GetRaceIDByShortname("azgalor"))
+		{
+			new Float:StartPos[3];
+			new Float:EndPos[3];
+			
+			GetClientAbsOrigin( attacker, StartPos );
+			GetClientAbsOrigin( victim, EndPos );
+
+			StartPos[2]+=100;
+			TE_SetupGlowSprite(StartPos,FireSprite,3.0,0.80,212);
+			TE_SendToAll();
+
+			TE_SetupDynamicLight(StartPos,255,80,80,10,radius,3.30,2.2);
+			TE_SendToAll();
+			W3FlashScreen(attacker,RGBA_COLOR_RED);
+			EmitSoundToClient(attacker, catchsnd);				
+			
+			new teammount = GetRandomInt(1,3);
+			switch(teammount)
 			{
-				new Float:StartPos[3];
-				new Float:EndPos[3];
-				
-				GetClientAbsOrigin( attacker, StartPos );
-				GetClientAbsOrigin( victim, EndPos );
-
-				StartPos[2]+=100;
-				TE_SetupGlowSprite(StartPos,FireSprite,3.0,0.80,212);
-				TE_SendToAll();
-
-				TE_SetupDynamicLight(StartPos,255,80,80,10,radius,3.30,2.2);
-				TE_SendToAll();
-				W3FlashScreen(attacker,RGBA_COLOR_RED);
-				EmitSoundToClient(attacker, catchsnd);				
-				/*if.mp3eammount!=0)
-				{
-					EndPos[0] += GetRandomFloat( -140.0, 140.0 );
-					EndPos[1] += GetRandomFloat( -135.0, 135.0 );
-					EndPos[2] += GetRandomFloat( -142.0, 142.0 );
-					DoExplosion(EndPos,damage,maxdmg,attacker);
-					
-				}
-				if(teammount=2)
-				{
-					EndPos[0] += GetRandomFloat( -140.0, 140.0 );
-					EndPos[1] += GetRandomFloat( -135.0, 135.0 );
-					EndPos[2] += GetRandomFloat( -142.0, 142.0 );
-					DoExplosion(damage,maxdmg,attacker);
-					
-				}
-				if(teammount=3)
-				{
-					EndPos[0] += GetRandomFloat( -140.0, 140.0 );
-					EndPos[1] += GetRandomFloat( -135.0, 135.0 );
-					EndPos[2] += GetRandomFloat( -142.0, 142.0 );
-					DoExplosion(damage,maxdmg,attacker);
-					
-					
-				}*/
-				new teammount = GetRandomInt(1,3);
-				switch(teammount)
-				{
-					case 1:
-						DoExplosion(damage,maxdmg,attacker,victim);
-					case 2:
-						DoExplosion(damage,maxdmg,attacker,victim);
-					case 3:
-						DoExplosion(damage,maxdmg,attacker,victim);
-				}
-				
-				
-				if(showmsg)
-				{
-					PrintHintText(attacker,"Fire Storm:each of fire"teammount);
-				}
+				case 1:
+					DoExplosion(damage,maxdmg,attacker,victim);
+				case 2:
+					DoExplosion(damage,maxdmg,attacker,victim);
+				case 3:
+					DoExplosion(damage,maxdmg,attacker,victim);
 			}
-		//}
+			
+			
+			if(showmsg)
+			{
+				PrintHintText(attacker,"Fire Storm:each of fire",teammount);
+			}
+		}
+		
 	}
 }
 
@@ -523,7 +498,7 @@ public OnWar3EventDeath(victim,attacker)
 				new damage2=DamageFire2[skill_level];
 				bIsTarget[victim]=true;
 				CreateTimer( 0.10, Timer_DeSelect, victim );
-				IgniteExplosion(damage1,damage2,attacker,victim)
+				IgniteExplosion(damage1,damage2,attacker,victim);
 				CreateFlame(attacker,victim);
 				CreateTimer(10.0, Timer_Extinguish, attacker);
 				TE_Start("Bubbles");
@@ -835,7 +810,7 @@ public OnAbilityCommand(client,ability,bool:pressed)
 					}
 					else
 					{
-						new Float:distance = PitMaxDistance[skill_level]
+						new Float:distance = PitMaxDistance[skill_level];
 						W3MsgNoTargetFound(client,distance);
 						//PrintHintText(client,"No Valid Target in %f Feed found",PitMaxDistance[skill_level]/10.0);
 						//PrintToChat(client,"\x05Failed, No Valid Target in %d Feed found!",PitMaxDistance[skill_level]/10.0);

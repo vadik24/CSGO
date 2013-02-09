@@ -80,7 +80,8 @@ public OnRaceChanged(client,oldrace,newrace)
 		War3_WeaponRestrictTo(client,thisRaceID, "");
 	}
 	if(newrace==thisRaceID){
-		War3_WeaponRestrictTo(client,thisRaceID,"weapon_ssg08,weapon_glock,weapon_hkp2000,weapon_fiveseven,weapon_p250,weapon_deagle,weapon_m4a1,weapon_ak47,weapon_elite");
+		//War3_WeaponRestrictTo(client,thisRaceID,"weapon_ssg08,weapon_glock,weapon_hkp2000,weapon_fiveseven,weapon_p250,weapon_deagle,weapon_m4a1,weapon_ak47,weapon_elite");
+		War3_WeaponRestrictTo(client,thisRaceID,"weapon_ssg08");
 		bFlying[client]=false;
 		if(ValidPlayer(client,true))
 		{
@@ -293,7 +294,8 @@ public OnWar3EventSpawn(client)
 		InitPassiveSkills(client);
 		bFlying[client]=false;
 		War3_SetBuff(client,bFlyMode,thisRaceID,false);
-		War3_WeaponRestrictTo(client,thisRaceID,"weapon_ssg08,weapon_glock,weapon_hkp2000,weapon_fiveseven,weapon_p250,weapon_deagle,weapon_m4a1,weapon_ak47,weapon_elite");
+		//War3_WeaponRestrictTo(client,thisRaceID,"weapon_ssg08,weapon_glock,weapon_hkp2000,weapon_fiveseven,weapon_p250,weapon_deagle,weapon_m4a1,weapon_ak47,weapon_elite");
+		War3_WeaponRestrictTo(client,thisRaceID,"weapon_ssg08");
 		if(ValidPlayer(client,true))
 		{
 			GivePlayerItem(client,"weapon_ssg08");

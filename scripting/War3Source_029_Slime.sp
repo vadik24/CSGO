@@ -213,7 +213,8 @@ public OnW3TakeDmgBulletPre(victim,attacker,Float:damage)
 				{
 					W3FlashScreen(victim,RGBA_COLOR_GREEN);
 					War3_DamageModPercent(0.0); //NO DAMAMGE
-					W3MsgEvaded(victim,attacker);
+					PrintHintText(victim,"%T","You Evaded a Shot",victim);
+					PrintHintText(attacker,"%T","Enemy Evaded",attacker);
 				}
 			}
 			

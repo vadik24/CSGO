@@ -158,7 +158,8 @@ public OnW3TakeDmgBulletPre(victim, attacker, Float:damage)
 				if(!IsSkillImmune(attacker))
 				{
 					War3_DamageModPercent(0.0);
-					W3MsgEvaded(victim, attacker);
+					PrintHintText(victim,"%T","You Evaded a Shot",victim);
+					PrintHintText(attacker,"%T","Enemy Evaded",attacker);
 					
 					new Float:startpos[3];
 					new Float:endpos[3];

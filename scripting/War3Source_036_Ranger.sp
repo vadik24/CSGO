@@ -17,6 +17,8 @@
 // War3Source stuff
 new thisRaceID;
 
+new String:PowerModel[]= "models/player/mapeadores/morell/powerranger/green.mdl";
+
 //Trackless skill
 new Float:TracklessAlphaTF[5]={1.0,0.84,0.68,0.56,0.40};
 new Float:TracklessAlphaCS[5]={1.0,0.90,0.8,0.7,0.6};
@@ -74,6 +76,7 @@ public OnWar3LoadRaceOrItemOrdered2(num)
 
 public OnMapStart()
 {
+	PrecacheModel(PowerModel,true);
 	////War3_PrecacheSound(shadowstrikestr);
 }
 
@@ -88,6 +91,7 @@ public OnRaceChanged(client,oldrace,newrace)
 	{
 		if(IsPlayerAlive(client))
 		{
+			SetEntityModel(client, PowerModel);
 			ActivateSkills(client);
 		}
 	}
@@ -156,6 +160,7 @@ public Heae(client)
 		}
 	}
 }
+
 public OnW3TakeDmgBullet(victim,attacker,Float:damage)
 {
 	if(IS_PLAYER(victim)&&IS_PLAYER(attacker)&&victim>0&&attacker>0&&attacker!=victim)
@@ -208,7 +213,8 @@ public OnW3TakeDmgBulletPre(victim,attacker,Float:damage)
 					
 					War3_DamageModPercent(0.0); //NO DAMAMGE
 					
-					W3MsgEvaded(victim,attacker);
+					PrintHintText(victim,"%T","You Evaded a Shot",victim);
+					PrintHintText(attacker,"%T","Enemy Evaded",attacker);
 					if(War3_GetGame()==Game_TF)
 					{
 						decl Float:pos[3];
@@ -232,4 +238,15 @@ public Action:ShadowStrikeLoop(Handle:timer,any:userid)
 		W3FlashScreen(victim,RGBA_COLOR_GREEN);
 		CreateTimer(1.0,ShadowStrikeLoop,userid);
 	}
+}
+
+
+public OnWar3EventSpawn(client)
+{
+	if(War3_GetRace(client)==thisRaceID)
+	{
+		
+		SetEntityModel(client, PowerModel);
+	}
+	
 }

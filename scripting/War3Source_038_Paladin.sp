@@ -319,7 +319,7 @@ public Action:UpdateAuraNotification(Handle:timer)
 			{
 				TE_SetupBeamRingPoint(effect_vec,45.0,44.0,BeamSprite,HaloSprite,0,15,0.1,float(skill_offensive),0.0,{255,0,0,255},10,0);
 				// TE_SendToAll();
-				new aa = 0;//, team = 2;
+				new tmp3 = 0;//, team = 2;
 				decl sendarray[32];
 				for (new x = 1; x <= MaxClients; x++)
 				{
@@ -328,18 +328,18 @@ public Action:UpdateAuraNotification(Handle:timer)
 						new XTeam = GetClientTeam(x);
 						if (XTeam == PaladinsTeam)
 						{
-							sendarray[aa++] = x;
+							sendarray[tmp3++] = x;
 						}
 					}
 				}
-				TE_Send(sendarray, aa);
+				TE_Send(sendarray, tmp3);
 			}
 			effect_vec[2]+=5.0;
 			if(skill_defensive>0)
 			{
 				TE_SetupBeamRingPoint(effect_vec,45.0,44.0,BeamSprite,HaloSprite,0,15,0.1,float(skill_defensive),0.0,{0,0,255,255},10,0);
 				// TE_SendToAll();
-				new aa = 0;//, team = 2;
+				new tmp3 = 0;//, team = 2;
 				decl sendarray[32];
 				for (new x = 1; x <= MaxClients; x++)
 				{
@@ -348,18 +348,18 @@ public Action:UpdateAuraNotification(Handle:timer)
 						new XTeam = GetClientTeam(x);
 						if (XTeam == PaladinsTeam)
 						{
-							sendarray[aa++] = x;
+							sendarray[tmp3++] = x;
 						}
 					}
 				}
-				TE_Send(sendarray, .aa);
+				TE_Send(sendarray, tmp3);
 			}
 			effect_vec[2]+=5.0;
 			if(skill_healing>0)
 			{
 				TE_SetupBeamRingPoint(effect_vec,45.0,44.0,BeamSprite,HaloSprite,0,15,0.1,float(skill_healing),0.0,{0,255,0,255},10,0);
 				// TE_SendToAll();
-				new aa = 0;//, team = 2;
+				new tmp3 = 0;//, team = 2;
 				decl sendarray[32];
 				for (new x = 1; x <= MaxClients; x++)
 				{
@@ -368,11 +368,11 @@ public Action:UpdateAuraNotification(Handle:timer)
 						new XTeam = GetClientTeam(x);
 						if (XTeam == PaladinsTeam)
 						{
-							sendarray[aa++] = x;
+							sendarray[tmp3++] = x;
 						}
 					}
 				}
-				TE_Send(sendarray, aa);
+				TE_Send(sendarray, tmp3);
 			}
 		}
 	}

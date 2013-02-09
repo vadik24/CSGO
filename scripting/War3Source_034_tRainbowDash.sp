@@ -243,7 +243,8 @@ public OnW3TakeDmgBulletPre(victim,attacker,Float:damage)
 						
 						War3_DamageModPercent(0.0); //NO DAMAMGE
 						
-						W3MsgEvaded(victim,attacker);
+						PrintHintText(victim,"%T","You Evaded a Shot",victim);
+						PrintHintText(attacker,"%T","Enemy Evaded",attacker);
 						if(War3_GetGame()==Game_TF){
 							decl Float:pos[3];
 							GetClientEyePosition(victim, pos);
