@@ -259,7 +259,7 @@ public OnUltimateCommand( client, race, bool:pressed )
 
 Action:Push( client )
 {
-	new Float:besttargetDistance = 850.0; 
+	new Float:besttargetDistance = 1500.0; 
 	new Float:posVec[3];
 	new Float:otherVec[3];
 	new team = GetClientTeam( client );
