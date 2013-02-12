@@ -17,8 +17,7 @@
 // War3Source stuff
 new thisRaceID;
 
-new String:PowerModel[]= "models/player/mapeadores/morell/powerranger/green.mdl";
-
+new String:Models[] = "models/player/mapeadores/morell/powerranger/green.mdl";
 //Trackless skill
 new Float:TracklessAlphaTF[5]={1.0,0.84,0.68,0.56,0.40};
 new Float:TracklessAlphaCS[5]={1.0,0.90,0.8,0.7,0.6};
@@ -76,7 +75,7 @@ public OnWar3LoadRaceOrItemOrdered2(num)
 
 public OnMapStart()
 {
-	PrecacheModel(PowerModel,true);
+	PrecacheModel(Models, true);
 	////War3_PrecacheSound(shadowstrikestr);
 }
 
@@ -91,7 +90,7 @@ public OnRaceChanged(client,oldrace,newrace)
 	{
 		if(IsPlayerAlive(client))
 		{
-			SetEntityModel(client, PowerModel);
+			
 			ActivateSkills(client);
 		}
 	}
@@ -101,6 +100,7 @@ public ActivateSkills(client)
 {
 	if(War3_GetRace(client)==thisRaceID)
 	{
+		
 		new skilllevel=War3_GetSkillLevel(client,thisRaceID,SKILL_TRACKLESS);
 		new Float:alpha=(War3_GetGame()==Game_CS)?TracklessAlphaCS[skilllevel]:TracklessAlphaTF[skilllevel];
 		if(SKILL_TRACKLESS==1){
@@ -114,6 +114,21 @@ public ActivateSkills(client)
 		}
 		//War3_ChatMessage(client,"You fade %s into the woods.",(SKILL_TRACKLESS==1)?"slightly":(SKILL_TRACKLESS==2)?"well":(SKILL_TRACKLESS==3)?"greatly":"dramatically");
 		War3_SetBuff(client,fInvisibilitySkill,thisRaceID,alpha);
+	
+		new ClientTeam = GetClientTeam(client);
+		SetEntityModel(client, Models);
+		if(ClientTeam==3)
+		{
+			W3SetPlayerColor(client,thisRaceID,20,100,200,255,1);
+		}
+		else if(ClientTeam==2)
+		{
+			W3SetPlayerColor(client,thisRaceID,220,50,0,255,1);
+		}
+		else
+		{
+			W3ResetPlayerColor(client,thisRaceID);
+		}
 	}
 }
 
@@ -240,13 +255,14 @@ public Action:ShadowStrikeLoop(Handle:timer,any:userid)
 	}
 }
 
-
 public OnWar3EventSpawn(client)
 {
-	if(War3_GetRace(client)==thisRaceID)
+
+	new race=War3_GetRace(client);
+	if(race==thisRaceID)
 	{
-		
-		SetEntityModel(client, PowerModel);
-	}
 	
+		ActivateSkills(client);
+		
+	}
 }
