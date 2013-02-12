@@ -18,10 +18,10 @@
 new thisRaceID, SKILL_ATTACK, SKILL_SPEED, SKILL_TIME, ULT_PUSH;
 
 // Chance/Data Arrays
-new Float:ImpulseChance[6] = { 0.0, .10, .20, .30, .40, .45 };
-new Float:TimeChance[6] = { 0.0, 0.5, 0.7, 0.10, 0.13, 0.15 };
-new Float:ElementSpeed[6] = { 0.0, 1.10, 1.15, 1.20, 1.25, 1.30 };
-new Float:TimeDelay[6] = { 0.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
+new Float:ImpulseChance[6] = { 0.0, .05, .10, .20, .30, .40 };
+new Float:TimeChance[6] = { 0.0, 0.05, 0.07, 0.10, 0.13, 0.15 };
+new Float:ElementSpeed[6] = { 0.0, 1.05, 1.10, 1.16, 1.23, 1.30 };
+new Float:TimeDelay[6] = { 0.0, 2.0, 3.0, 4.0, 6.0, 8.0 };
 new ImpulseDamage[6] = { 0, 15, 20, 25, 30, 35 };
 new GravForce[6] = { 0, 1, 1.2, 1.5, 1.7, 2 };
 new Float:AttackerPos[64][3];
