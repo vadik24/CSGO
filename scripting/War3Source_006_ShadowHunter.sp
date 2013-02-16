@@ -1,4 +1,3 @@
-
 #pragma semicolon 1
 
 #include <sourcemod>
@@ -30,8 +29,8 @@ new Float:HexChanceArr[]={0.00,0.02,0.050,0.075,0.100};
 //skill 3
 
 #define MAXWARDS 64*4
-#define WARDRADIUS 95
-#define WARDDAMAGE 10
+#define WARDRADIUS 45
+#define WARDDAMAGE 2
 #define WARDBELOW -2.0
 #define WARDABOVE 140.0
 
