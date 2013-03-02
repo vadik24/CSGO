@@ -103,13 +103,13 @@ public OnWar3EventSpawn( client )
 		//InitPassiveSkills( client );
 				
 		if( War3_GetSkillLevel( client, thisRaceID, SKILL_GUN ) == 1 )
-			GivePlayerItem( client, "weapon_mp7" );
+			GivePlayerItem( client, "weapon_ump45" );
 		if( War3_GetSkillLevel( client, thisRaceID, SKILL_GUN ) == 2 )
-			GivePlayerItem( client, "weapon_famas" );
+			GivePlayerItem( client, "weapon_mp7" );
 		if( War3_GetSkillLevel( client, thisRaceID, SKILL_GUN ) == 3 )
-			GivePlayerItem( client, "weapon_m4a1" );
+			GivePlayerItem( client, "weapon_famas" );
 		if( War3_GetSkillLevel( client, thisRaceID, SKILL_GUN ) == 4 )
-			GivePlayerItem( client, "weapon_m249" );
+			GivePlayerItem( client, "weapon_m4a1" );
 	}
 }
 
