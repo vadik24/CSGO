@@ -29,8 +29,8 @@ new Float:HexChanceArr[]={0.00,0.02,0.050,0.075,0.100};
 //skill 3
 
 #define MAXWARDS 64*4
-#define WARDRADIUS 45
-#define WARDDAMAGE 2
+#define WARDRADIUS 100
+#define WARDDAMAGE 3
 #define WARDBELOW -2.0
 #define WARDABOVE 140.0
 
