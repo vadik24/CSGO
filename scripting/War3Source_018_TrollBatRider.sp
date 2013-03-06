@@ -20,11 +20,11 @@ new Handle:ultCooldownCvar;
 //new String:TrollModel[]="models/player/techknow/demon/demon.mdl";
 
 //skill 1
-new RegenAmountArr[]={0,1,1,2,2,3,3,4,5};
+new RegenAmountArr[]={0,1,2,3,4,5,6,7,8};
 
 //skill 2
-new Float:ArcaniteDamagePercent[9]={0.0,0.26,0.28,0.30,0.32,0.34,0.36,0.38,0.40};
-new Float:ArcaniteChance[9]={0.0,0.58,0.61,0.64,0.67,0.71,0.74,0.77,0.80};
+new Float:ArcaniteDamagePercent[9]={0.0,0.26,0.30,0.34,0.36,0.40,0.44,0.48,0.50};
+new Float:ArcaniteChance[9]={0.0,0.58,0.61,0.64,0.67,0.71,0.77,0.84,0.90};
 //skill 3
 new Float:LiquidFireArr[9]={1.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0};
 
